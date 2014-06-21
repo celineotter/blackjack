@@ -7,12 +7,17 @@ class window.Hand extends Backbone.Collection
   initialize: (array, @deck, @isDealer) ->
 
   hit: ->
-    return if @scores()[0] >= 21  # Cheap disable button effect.
-    @add(@deck.pop()).last()
-    alert "Bust!" if @scores()[0] > 21
-    alert "Blackjack!" if @scores()[0] is 21
+    if (!@isDealer)
+      return if @scores()[0] >= 21  # Cheap disable button effect.
+      @add(@deck.pop()).last()
+      alert "Bust!" if @scores()[0] > 21
+      alert "Blackjack!" if @scores()[0] is 21
+    else
+      while(@scores()[0] < 17)
+        @add(@deck.pop()).last()
 
   stand: ->   #change hands
+    `debugger`
     @trigger 'playerStand'
 
   scores: ->
