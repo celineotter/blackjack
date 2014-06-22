@@ -7,27 +7,26 @@ class window.App extends Backbone.Model
     @set('playerHand', deck.dealPlayer())
     @set('dealerHand', deck.dealDealer())
 
-    @get('playerHand').on 'bust', -> @trigger 'win: dealer'
+    @get('playerHand').on 'bust', =>
+      #@trigger 'lose', @
+      @assessScores('lose')
+    
     @get('playerHand').on 'stand', =>
-      `debugger`
       @get('dealerHand').playWin()
+    
+    @get('dealerHand').on 'bust', =>
+      #@trigger 'win', @
+      @assessScores('win')
 
-    @get('dealerHand').on 'bust', -> @trigger 'win: player'
-
-    # @get('dealerHand').on 'stand', =>
-    #   `debugger`
-    #   pScore = @get('playerHand').scores()[0]
-    #   dScore = @get('dealerHand').scores()[0]
 
     @get('dealerHand').on 'stand', =>
-      `debugger`
       pScore = @get('playerHand').scores()[0]
       dScore = @get('dealerHand').scores()[0]
-      alert ( if pScore is dScore then 'Game is a draw' else if pScore > dScore then 'You Win' else 'Dealer Wins' )
-      #@gameEval()
+      if pScore is dScore then @assessScores('draw')
+      else if pScore > dScore then @assessScores('win')
+      else @assessScores('lose')
 
-  # gameEval: ->
-  #   `debugger`
-  #   pScore = @get('playerHand').scores()[0]
-  #   dScore = @get('dealerHand').scores()[0]
-  #   alert ( if pScore is dScore then 'Game is a draw' else if pScore > dScore then 'You Win' else 'Dealer Wins' )
+  assessScores: (status) =>
+    @trigger 'lose', @ if status is 'lose'
+    @trigger 'win', @ if status is 'win'
+    @trigger 'draw', @ if status is 'draw'
