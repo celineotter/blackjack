@@ -8,16 +8,18 @@ class window.AppView extends Backbone.View
 
   events:
     "click .hit-button": ->
-      `debugger`
       @model.get('playerHand').hit()
 
     "click .stand-button": ->
+      @model.get('playerHand').stand()
+
       #@model.get('playerHand').stand()
-      @model.get('dealerHand').at(0).flip()
-      @model.get('dealerHand').hit()
-      alert 'player wins' if @model.get('playerHand').scores()[0] > @model.get('dealerHand').scores()[0]
-      alert 'dealer wins' if @model.get('playerHand').scores()[0] < @model.get('dealerHand').scores()[0]
-      alert 'parties drew' if @model.get('playerHand').scores()[0] == @model.get('dealerHand').scores()[0]
+      #@model.get('dealerHand').at(0).flip()
+
+      # @model.get('dealerHand').hit()
+      # alert 'player wins' if @model.get('playerHand').scores()[0] > @model.get('dealerHand').scores()[0]
+      # alert 'dealer wins' if @model.get('playerHand').scores()[0] < @model.get('dealerHand').scores()[0]
+      # alert 'parties drew' if @model.get('playerHand').scores()[0] == @model.get('dealerHand').scores()[0]
 
   initialize: ->
     @render()

@@ -7,18 +7,24 @@ class window.Hand extends Backbone.Collection
   initialize: (array, @deck, @isDealer) ->
 
   hit: ->
-    if (!@isDealer)
+    # if (@isDealer)
+    #   while(@scores()[0] < 17)
+    #     @add(@deck.pop()).last()
+    #@trigger 'playerStand'
       return if @scores()[0] >= 21  # Cheap disable button effect.
-      @add(@deck.pop()).last()
-      alert "Bust!" if @scores()[0] > 21
-      alert "Blackjack!" if @scores()[0] is 21
-    else
-      while(@scores()[0] < 17)
-        @add(@deck.pop()).last()
+      @add(@deck.pop()) # @add(@deck.pop()).last()
+
+      #@trigger 'win' if (@scores()[0] == 21)
+
+      @trigger 'bust' if @busted()
+      #alert "Bust!" if @scores()[0] > 21
+      #alert "Blackjack!" if @scores()[0] is 21
 
   stand: ->   #change hands
-    `debugger`
-    @trigger 'playerStand'
+    @trigger 'stand'
+
+  busted: ->
+    @scores()[0] > 21
 
   scores: ->
     # The scores are an array of potential scores.
@@ -34,3 +40,9 @@ class window.Hand extends Backbone.Collection
     , 0
 
     if hasAce then [score, score + 10] else [score]
+
+
+  playWin: ->
+    @first().flip()
+    @hit() while @scores()[0] < 17
+    @stand()
