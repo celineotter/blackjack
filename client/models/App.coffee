@@ -2,14 +2,21 @@
 class window.App extends Backbone.Model
 
   initialize: ->
-    # @set 'deck', deck = new Deck()
+    @newGame()
+
+  assessScores: (status) =>
+    #@trigger 'lose' if status is 'lose'
+    #@trigger 'win' if status is 'win'
+    @trigger 'draw' if status is 'draw'
+
+  newGame: ->
     @set('deck',  deck = new Deck())
     @set('playerHand', deck.dealPlayer())
     @set('dealerHand', deck.dealDealer())
 
     @get('playerHand').on 'bust', =>
-      #@trigger 'lose', @
-      @assessScores('lose')
+      @trigger 'lose'
+      #@assessScores('lose')
     
     @get('playerHand').on 'stand', =>
       @get('dealerHand').playWin()
@@ -25,8 +32,3 @@ class window.App extends Backbone.Model
       if pScore is dScore then @assessScores('draw')
       else if pScore > dScore then @assessScores('win')
       else @assessScores('lose')
-
-  assessScores: (status) =>
-    @trigger 'lose' if status is 'lose'
-    @trigger 'win' if status is 'win'
-    @trigger 'draw' if status is 'draw'
