@@ -5,8 +5,8 @@ class window.App extends Backbone.Model
     @newGame()
 
   assessScores: (status) =>
-    #@trigger 'lose' if status is 'lose'
-    #@trigger 'win' if status is 'win'
+    @trigger 'lose' if status is 'lose'
+    @trigger 'win' if status is 'win'
     @trigger 'draw' if status is 'draw'
 
   newGame: ->
@@ -24,6 +24,8 @@ class window.App extends Backbone.Model
     @get('dealerHand').on 'bust', =>
       #@trigger 'win', @
       @assessScores('win')
+
+    @trigger 'newGame'
 
 
     @get('dealerHand').on 'stand', =>

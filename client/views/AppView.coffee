@@ -16,22 +16,24 @@ class window.AppView extends Backbone.View
       @model.get('playerHand').stand()
 
     "click .reset-button": ->
-      @$('.results-container').html ''
       @model.newGame()
 
   initialize: ->
     @render()
+
     @model.on 'win', -> 
-    @$('.results-container').html 'Player Wins!'
-      #alert 'Player Wins!'
+      @$('.results-container').html 'Player Wins!'
+    , @
     
     @model.on 'lose', -> 
       @$('.results-container').html 'Dealer Wins!'
-      #alert 'Dealer Wins!'
+    , @
     
     @model.on 'draw', -> 
       @$('.results-container').html 'It\'s a draw!'
-      #alert 'It\'s a draw!'
+    , @
+
+    @model.on 'newGame', @render
 
   
   render: =>
