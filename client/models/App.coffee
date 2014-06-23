@@ -27,6 +27,6 @@ class window.App extends Backbone.Model
       else @assessScores('lose')
 
   assessScores: (status) =>
-    @trigger 'lose', @ if status is 'lose'
-    @trigger 'win', @ if status is 'win'
-    @trigger 'draw', @ if status is 'draw'
+    @trigger 'lose' if status is 'lose'
+    @trigger 'win' if status is 'win'
+    @trigger 'draw' if status is 'draw'
